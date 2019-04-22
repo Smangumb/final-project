@@ -12,7 +12,7 @@ namespace final_project.WebUI.Controllers
         private List<ShelterOne> Animals = new List<ShelterOne>
         {
             new ShelterOne { Id = 1, Breed = "Mix Terrier", Gender = "Male", Name = "Milo", Age = 9, Weight = 100, Color = "Brown"},
-            new ShelterOne { Id = 2, Breed = "Maltipoo", Gender = "Male", Name = "Banks", Age = 1, Weight = 20, Color = "White & Black"},
+            new ShelterOne { Id = 2, Breed = "Maltipoo", Gender = "Male", Name = "Banks", Age = 1, Weight = 25, Color = "White & Black"},
         };
         public IActionResult Index()
         {
