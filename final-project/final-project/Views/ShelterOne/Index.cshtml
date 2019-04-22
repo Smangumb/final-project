@@ -23,14 +23,17 @@
             <td>@shelter.Age</td>
             <td>@shelter.Color</td>
             <td>@shelter.Weight</td>
-            <td>@shelter.Image</td>
+            <td>
+                <a asp-controller="shelterone" asp-action="detail" asp-route-id="@shelter.Id">Detail</a> |
+                <a href="#" class="js-open-modal" data-property-id="@shelter.Id">Delete</a>
+            </td>
         </tr>
     }
 
     @if (Model.Count == 0)
     {
         <tr>
-            <td colspan="4">
+            <td colspan="7">
                 You don't have any animals yet - <a href="/shelterone/add">Add Animal</a>
             </td>
         </tr>
@@ -40,4 +43,39 @@
 @if (Model.Count > 0)
 {
     <a class="btn btn-primary" asp-action="add" asp-controller="shelterone">Add</a>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="delete-confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @*<div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>*@
+            <div class="modal-body">
+                Are you sure you want to delete that property?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="js-delete-button" class="btn btn-primary">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $('.js-open-modal').on('click', event => {
+            const propertyId = $(event.target).data('property-id');
+            const url = `/property/delete/${propertyId}`;
+
+            $('#js-delete-button').attr('href', url);
+
+            $('#delete-confirmation').modal('show');
+        });
+    </script>
 }
