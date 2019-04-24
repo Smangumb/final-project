@@ -48,5 +48,28 @@ namespace final_project.WebUI.Controllers
 
             return View(nameof(Index), Animals);
         }
+
+        // shelter/edit/1
+        public IActionResult Edit(int id) // --> get id from URL
+        {
+            var animal = Animals.Single(p => p.Id == id);
+
+            return View("Form", animal);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, ShelterOne updatedAnimal)
+        {
+            var OldAnimal = Animals.Single(p => p.Id == id);
+
+            OldAnimal.Breed = updatedAnimal.Breed;
+            OldAnimal.Gender = updatedAnimal.Gender;
+            OldAnimal.Name = updatedAnimal.Name;
+            OldAnimal.Age = updatedAnimal.Age;
+            OldAnimal.Weight = updatedAnimal.Weight;
+            OldAnimal.Color = updatedAnimal.Color;
+
+            return View(nameof(Index), Animals);
+        }
     }
 }
