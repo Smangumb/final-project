@@ -25,6 +25,7 @@
             <td>@shelter.Weight</td>
             <td>
                 <a asp-controller="shelterone" asp-action="detail" asp-route-id="@shelter.Id">Detail</a> |
+                <a asp-controller="shelterone" asp-action="edit" asp-route-id="@shelter.Id">Edit</a>
                 <a href="#" class="js-open-modal" data-property-id="@shelter.Id">Delete</a>
             </td>
         </tr>
