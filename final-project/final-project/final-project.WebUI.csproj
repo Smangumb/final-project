@@ -15,7 +15,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\final-project.Models\final-project.Models.csproj" />
+    <ProjectReference Include="..\final-project.Models\final-project.Domain.csproj" />
   </ItemGroup>
 
 </Project>
