@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using final_project.Models.Model;
+using final_project.Domain.Models;
 
 namespace final_project.WebUI.Controllers
 {
@@ -27,9 +27,14 @@ namespace final_project.WebUI.Controllers
         [HttpPost]
         public IActionResult Add(ShelterOne newShelter)
         {
-            Animals.Add(newShelter);
+            if (ModelState.IsValid)
+            {
+                Animals.Add(newShelter);
 
-            return View(nameof(Index), Animals);
+                return View(nameof(Index), Animals);
+            }
+
+            return View("Form");
         }
 
         public IActionResult Detail(int id)
@@ -60,16 +65,20 @@ namespace final_project.WebUI.Controllers
         [HttpPost]
         public IActionResult Edit(int id, ShelterOne updatedAnimal)
         {
-            var OldAnimal = Animals.Single(p => p.Id == id);
+            if (ModelState.IsValid)
+            {
+                var OldAnimal = Animals.Single(p => p.Id == id);
 
-            OldAnimal.Breed = updatedAnimal.Breed;
-            OldAnimal.Gender = updatedAnimal.Gender;
-            OldAnimal.Name = updatedAnimal.Name;
-            OldAnimal.Age = updatedAnimal.Age;
-            OldAnimal.Weight = updatedAnimal.Weight;
-            OldAnimal.Color = updatedAnimal.Color;
+                OldAnimal.Breed = updatedAnimal.Breed;
+                OldAnimal.Gender = updatedAnimal.Gender;
+                OldAnimal.Name = updatedAnimal.Name;
+                OldAnimal.Age = updatedAnimal.Age;
+                OldAnimal.Weight = updatedAnimal.Weight;
+                OldAnimal.Color = updatedAnimal.Color;
 
-            return View(nameof(Index), Animals);
+                return View(nameof(Index), Animals);
+            }
+            return View("Form", updatedAnimal);
         }
     }
 }
