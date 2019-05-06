@@ -20,7 +20,7 @@ namespace final_project.Data.Context
         {
             // Conntection strin gis divided in 3 elements
             // server - database - authentication
-            optionsBuilder.UseSqlServer(@"Server=(locladb)\mssqllocaldb;Database=final_project;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=final_project;Trusted_Connection=true");
         }
     }
 }
