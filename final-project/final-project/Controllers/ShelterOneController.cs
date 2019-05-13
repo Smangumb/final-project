@@ -4,81 +4,85 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using final_project.Domain.Models;
+using final_project.Service.Services;
 
 namespace final_project.WebUI.Controllers
 {
     public class ShelterOneController : Controller
     {
-        private List<ShelterOne> Animals = new List<ShelterOne>
+        private readonly IShelterService __shelterService;
+
+        public ShelterOneController(IShelterService shelterService)
         {
-            new ShelterOne { Id = 1, Breed = "Mix Terrier", Gender = "Male", Name = "Milo", Age = 9, Weight = 100, Color = "Brown"},
-            new ShelterOne { Id = 2, Breed = "Maltipoo", Gender = "Male", Name = "Banks", Age = 1, Weight = 25, Color = "White & Black"},
-        };
-        public IActionResult Index()
-        {
-            return View(Animals);
+            __shelterService = shelterService;
         }
 
+        // property/index
+        public IActionResult Index()
+        {
+            var shelters = __shelterService.GetAllShelters();
+            return View(shelters);
+        }
+
+        // GET property/add
+        [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            return View("Form"); // --> Add.cshtml, remaned to Form.cshtml
         }
 
         [HttpPost]
-        public IActionResult Add(ShelterOne newShelter)
+        public IActionResult Add(ShelterOne newShelter) // -> receive data from a HTML form
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // all required fields are completed
             {
-                Animals.Add(newShelter);
-
-                return View(nameof(Index), Animals);
+                __shelterService.Create(newShelter);
+                return RedirectToAction(nameof(Index)); // -> Index();
             }
 
             return View("Form");
         }
 
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int id) // -> get id from URL
         {
-
-            var shelter = Animals.Single(p => p.Id == id);
+            var shelter = __shelterService.GetById(id);
 
             return View(shelter);
         }
 
         public IActionResult Delete(int id)
         {
-            var shelter = Animals.Single(p => p.Id == id);
+            var succeeded = __shelterService.Delete(id);
 
-            Animals.Remove(shelter);
+            if (!succeeded) // when delete fails (false)
+                ViewBag.Error = "Sorry, the animal could not be deleted, try agaim later.";
 
-            return View(nameof(Index), Animals);
+            return RedirectToAction(nameof(Index));
         }
 
-        // shelter/edit/1
-        public IActionResult Edit(int id) // --> get id from URL
+        // property/edit/1
+        public IActionResult Edit(int id) // --> get id from URL 
         {
-            var animal = Animals.Single(p => p.Id == id);
+            var shelter = __shelterService.GetById(id);
 
-            return View("Form", animal);
+            return View("Form", shelter); // Edit.cshtml, remaned to Form.cshtml
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, ShelterOne updatedAnimal)
+        // get id from URL
+        // get updatedProperty from FORM
+        public IActionResult Edit(int id, ShelterOne updatedShelter)
         {
             if (ModelState.IsValid)
             {
-                var OldAnimal = Animals.Single(p => p.Id == id);
+                __shelterService.Update(updatedShelter);
 
-                OldAnimal.Breed = updatedAnimal.Breed;
-                OldAnimal.Gender = updatedAnimal.Gender;
-                OldAnimal.Name = updatedAnimal.Name;
-                OldAnimal.Age = updatedAnimal.Age;
-                OldAnimal.Weight = updatedAnimal.Weight;
-                OldAnimal.Color = updatedAnimal.Color;
-
-                return View(nameof(Index), Animals);
+                return RedirectToAction(nameof(Index));
             }
-            return View("Form", updatedAnimal);
+
+            return View("Form", updatedShelter); // By passing updatedShelter
+                                                 // We trigger the logic
+                                                 // for Edit within the Form.cshtml
         }
     }
 }

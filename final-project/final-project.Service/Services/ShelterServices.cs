@@ -22,12 +22,12 @@ namespace final_project.Service.Services
         bool Delete(int id);
     }
 
-    public class PropertyService : IShelterService
+    public class ShelterService : IShelterService
     {
         private readonly IShelterRepository _shelterRepository; //-> null
 
         // Added a dependency to the constructor
-        public PropertyService(IShelterRepository shelterRepository)
+        public ShelterService(IShelterRepository shelterRepository)
         {
             _shelterRepository = shelterRepository; //-> not be null anymore
         }

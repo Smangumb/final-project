@@ -15,7 +15,8 @@ namespace final_project.Data.Implementation.SqlServer
             using (var context = new final_projectDbContext())
             {
                 // SQL -> Database look for table Properties
-                var shelter = context.Animals.Single(p => p.Id == id);
+                // if not found returns null value - rather than exception
+                var shelter = context.Animals.SingleOrDefault(p => p.Id == id);
                 return shelter;
             }
         }
@@ -51,6 +52,7 @@ namespace final_project.Data.Implementation.SqlServer
                 context.Entry(oldShelter).CurrentValues.SetValues(updatedShelter);
 
                 // save changes
+                context.Animals.Update(oldShelter);
                 context.SaveChanges();
 
                 return oldShelter; // To ensure that the save happened

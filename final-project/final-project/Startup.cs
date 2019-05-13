@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using final_project.Data.Implementation.SqlServer;
+using final_project.Data.Interfaces;
+using final_project.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,10 +34,22 @@ namespace final_project
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            AddServiceImplementation(services);
+            AddRepositoryImplementation(services);
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
+        private void AddRepositoryImplementation(IServiceCollection services)
+        {
+            services.AddSingleton<IShelterRepository, SqlServerShelterRepository>();
+        }
+
+        private void AddServiceImplementation(IServiceCollection services)
+        {
+            services.AddSingleton<IShelterService, ShelterService>();
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
