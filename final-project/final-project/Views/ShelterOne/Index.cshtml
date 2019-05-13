@@ -1,5 +1,12 @@
 ﻿@*Model Definition*@
-@model List<ShelterOne>
+@model ICollection<ShelterOne>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
 
 <h1>List of Animals</h1>
 
