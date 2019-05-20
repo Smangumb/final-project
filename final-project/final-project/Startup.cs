@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using final_project.Data.Implementation.SqlServer;
 using final_project.Data.Interfaces;
+using final_project.Service.Service;
 using final_project.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using final_project.Domain.Model;
+using final_project.Data.Context;
 
 namespace final_project
 {
@@ -34,6 +38,13 @@ namespace final_project
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Add DbContext as a service
+            services.AddDbContext<final_projectDbContext>();
+
+            // Add Identity as a service
+            services.AddIdentity<AppUser, IdentityRole>()
+            .AddEntityFrameworkStores<final_projectDbContext>();
+
             AddServiceImplementation(services);
             AddRepositoryImplementation(services);
 
@@ -44,11 +55,13 @@ namespace final_project
         private void AddRepositoryImplementation(IServiceCollection services)
         {
             services.AddSingleton<IShelterRepository, SqlServerShelterRepository>();
+            services.AddSingleton<IShelterTypeRepository, SqlServerShelterTypeRepository>();
         }
 
         private void AddServiceImplementation(IServiceCollection services)
         {
             services.AddSingleton<IShelterService, ShelterService>();
+            services.AddSingleton<IShelterTypeService, ShelterTypeServices>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

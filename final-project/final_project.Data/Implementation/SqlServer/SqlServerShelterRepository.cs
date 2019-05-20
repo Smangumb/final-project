@@ -1,6 +1,6 @@
 ﻿using final_project.Data.Context;
 using final_project.Data.Interfaces;
-using final_project.Domain.Models;
+using final_project.Domain.Model;
 using System;
 using System.Linq;
 using System.Collections.Generic;
