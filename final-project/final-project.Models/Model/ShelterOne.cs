@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using final_project.Domain.Model;
 
-namespace final_project.Domain.Models
+namespace final_project.Domain.Model
 {
     public class ShelterOne
     {
@@ -26,5 +27,15 @@ namespace final_project.Domain.Models
 
         [Required(ErrorMessage = "Don't forget to add the Color of the animal")]
         public string Color { get; set; }
+
+
+        // Fully Defined Relationship
+        [Display(Name = "Dog Type")]
+        public int ShelterTypeId { get; set; }
+        public ShelterType ShelterType { get; set; }
+
+        // fully Defined Relationship for AppUser
+        public string AppUserId { get; set; }
+        public AppUser Admin { get; set; }
     }
 }
